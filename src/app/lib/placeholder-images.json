@@ -1,0 +1,16 @@
+{
+  "placeholderImages": [
+    {
+      "id": "logo",
+      "description": "SongGRC Logo Placeholder",
+      "imageUrl": "https://picsum.photos/seed/grclogo/200/200",
+      "imageHint": "logo abstract"
+    },
+    {
+      "id": "user-avatar",
+      "description": "User profile avatar",
+      "imageUrl": "https://picsum.photos/seed/user123/100/100",
+      "imageHint": "person portrait"
+    }
+  ]
+}
