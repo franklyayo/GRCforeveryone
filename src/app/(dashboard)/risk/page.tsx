@@ -1,5 +1,5 @@
 "use client"
-import { cn } from "@/lib/utils";
+
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -12,6 +12,7 @@ import {
   TableRow 
 } from "@/components/ui/table"
 import { AlertCircle, AlertTriangle, ShieldCheck, Plus, Filter } from "lucide-react"
+import { cn } from "@/lib/utils"
 
 const risks = [
   { id: "RSK-001", title: "Ransomware Attack", impact: "Critical", likelihood: "High", score: 25, treatment: "Mitigate", owner: "Security Team" },
