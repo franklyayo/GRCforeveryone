@@ -2,12 +2,13 @@
 "use client"
 
 import { useState } from "react"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
+import { Shield, Search, Filter, Plus, ShieldCheck } from "lucide-react"
+import { Input } from "@/components/ui/input"
+import { Button } from "@/components/ui/button"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
-import { Plus, ShieldCheck } from "lucide-react"
 import { createControl } from "@/app/actions/compliance"
 
 interface ControlDocument {
@@ -42,9 +43,65 @@ export default function ComplianceClient({ initialControls }: { initialControls:
       <div className="flex justify-between items-center">
         <div>
           <h2 className="text-2xl font-bold tracking-tight">Compliance & Controls</h2>
-          <p className="text-muted-foreground">Map and track security controls against industry frameworks.</p>
+          <p className="text-muted-foreground">Monitor and manage control effectiveness across your frameworks.</p>
         </div>
-        
+      </div>
+
+      {/* Your Original Summary Cards */}
+      <div className="grid gap-4 md:grid-cols-4">
+        <Card>
+          <CardHeader className="p-4 flex flex-row items-center justify-between">
+            <CardTitle className="text-sm font-medium">SOC 2 Readiness</CardTitle>
+            <Shield className="h-4 w-4 text-primary" />
+          </CardHeader>
+          <CardContent className="px-4 pb-4 pt-0">
+            <div className="text-2xl font-bold">92%</div>
+            <p className="text-xs text-muted-foreground">8 active controls remaining</p>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader className="p-4 flex flex-row items-center justify-between">
+            <CardTitle className="text-sm font-medium">ISO 27001</CardTitle>
+            <Shield className="h-4 w-4 text-green-500" />
+          </CardHeader>
+          <CardContent className="px-4 pb-4 pt-0">
+            <div className="text-2xl font-bold">85%</div>
+            <p className="text-xs text-muted-foreground">Surveillance audit in 45 days</p>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader className="p-4 flex flex-row items-center justify-between">
+            <CardTitle className="text-sm font-medium">NIST CSF</CardTitle>
+            <Shield className="h-4 w-4 text-orange-500" />
+          </CardHeader>
+          <CardContent className="px-4 pb-4 pt-0">
+            <div className="text-2xl font-bold">72%</div>
+            <p className="text-xs text-muted-foreground">Improvement plan initiated</p>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader className="p-4 flex flex-row items-center justify-between">
+            <CardTitle className="text-sm font-medium">PCI DSS v4.0</CardTitle>
+            <Shield className="h-4 w-4 text-destructive" />
+          </CardHeader>
+          <CardContent className="px-4 pb-4 pt-0">
+            <div className="text-2xl font-bold">64%</div>
+            <p className="text-xs text-muted-foreground">Mandatory requirements missing</p>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Search and Action Bar */}
+      <div className="flex items-center gap-4">
+        <div className="relative flex-1">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          <Input placeholder="Search controls by ID, name, or framework..." className="pl-10" />
+        </div>
+        <Button variant="outline" className="gap-2">
+          <Filter className="h-4 w-4" /> Filter
+        </Button>
+
+        {/* The New Control Modal Button */}
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
           <DialogTrigger asChild>
             <Button className="gap-2">
@@ -91,25 +148,34 @@ export default function ComplianceClient({ initialControls }: { initialControls:
         </Dialog>
       </div>
 
+      {/* The Dynamic Data Table */}
       <Card>
+        <CardHeader>
+          <CardTitle>Core Control Matrix</CardTitle>
+          <CardDescription>Consolidated view of all internal controls and their mapping to standards.</CardDescription>
+        </CardHeader>
         <CardContent className="p-0">
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead className="w-[100px]">ID</TableHead>
+                <TableHead className="w-[100px] pl-6">ID</TableHead>
                 <TableHead>Control Requirement</TableHead>
                 <TableHead>Framework</TableHead>
                 <TableHead>Status</TableHead>
-                <TableHead className="text-right">Evidence</TableHead>
+                <TableHead className="text-right pr-6">Evidence</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {initialControls.length === 0 ? (
-                <TableRow><TableCell colSpan={5} className="text-center py-6 text-muted-foreground">No controls mapped yet.</TableCell></TableRow>
+                <TableRow>
+                  <TableCell colSpan={5} className="text-center py-10 text-muted-foreground">
+                    No controls mapped yet. Click "Add Control" to get started.
+                  </TableCell>
+                </TableRow>
               ) : (
                 initialControls.map((control) => (
                   <TableRow key={control._id}>
-                    <TableCell className="font-medium">{control.controlId}</TableCell>
+                    <TableCell className="font-medium pl-6">{control.controlId}</TableCell>
                     <TableCell>{control.title}</TableCell>
                     <TableCell>
                       <Badge variant="outline">{control.framework}</Badge>
@@ -119,7 +185,7 @@ export default function ComplianceClient({ initialControls }: { initialControls:
                         {control.status}
                       </Badge>
                     </TableCell>
-                    <TableCell className="text-right">
+                    <TableCell className="text-right pr-6">
                       <Button variant="ghost" size="sm" className="gap-2">
                         <ShieldCheck className="h-4 w-4" /> Verify
                       </Button>
