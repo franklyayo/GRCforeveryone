@@ -1,7 +1,6 @@
 // src/app/api/auth/[...nextauth]/route.ts
 
 export const dynamic = "force-dynamic"; // <-- Add this line
-import clientPromise from "@/lib/mongoClient";
 import NextAuth from "next-auth";
 import EmailProvider from "next-auth/providers/email";
 import { MongoDBAdapter } from "@auth/mongodb-adapter";
