@@ -29,3 +29,25 @@ export async function createRisk(formData: FormData) {
   // Notice we removed redirect("/")! 
   // Now the modal will just close smoothly and you stay on the page.
 }
+
+// src/app/actions/risk.ts (Add this below your existing createRisk function)
+
+export async function updateRisk(formData: FormData) {
+  // 1. Connect to the database
+  await connectToDatabase();
+
+  // 2. Extract the data from the assessment form
+  const id = formData.get("id");
+  const status = formData.get("status");
+  const level = formData.get("level");
+
+  // 3. Update the document in MongoDB
+  await Risk.findByIdAndUpdate(id, {
+    status,
+    level,
+  });
+
+  // 4. Clear the cache so the Table and Dashboard update instantly
+  revalidatePath("/risk");
+  revalidatePath("/"); 
+}
