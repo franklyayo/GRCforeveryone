@@ -3,6 +3,7 @@
 import * as React from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
+import { signOut } from "next-auth/react" // 1. Imported the signOut function
 import { 
   LayoutDashboard, 
   ShieldCheck, 
@@ -12,6 +13,7 @@ import {
   Sparkles,
   Settings,
   UserCircle,
+  LogOut, // 2. Imported the LogOut icon
   Menu
 } from "lucide-react"
 
@@ -39,7 +41,7 @@ const navigation = [
   { name: "AI Insights", href: "/ai-insights", icon: Sparkles },
 ]
 
-export function AppSidebar() {
+export function AppSidebar({ userEmail }: { userEmail?: string | null }) {
   const pathname = usePathname()
 
   return (
@@ -83,12 +85,26 @@ export function AppSidebar() {
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
+          
           <SidebarMenuItem>
             <SidebarMenuButton tooltip="User Profile">
               <UserCircle className="h-4 w-4" />
-              <span>Admin User</span>
+              <span className="truncate">{userEmail || "Admin User"}</span>
             </SidebarMenuButton>
           </SidebarMenuItem>
+
+          {/* 3. Added the Sign Out Button */}
+          <SidebarMenuItem>
+            <SidebarMenuButton 
+              tooltip="Sign Out" 
+              onClick={() => signOut({ callbackUrl: '/api/auth/signin' })}
+              className="text-destructive hover:text-destructive hover:bg-destructive/10"
+            >
+              <LogOut className="h-4 w-4" />
+              <span>Sign Out</span>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+
         </SidebarMenu>
       </SidebarFooter>
     </Sidebar>
